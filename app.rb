@@ -7,10 +7,10 @@ require 'sinatra/activerecord'
 set :database, "sqlite3:barbershop.db"
 
 class Client < ActiveRecord::Base
-	validates :name, :presence => { :message => "Name cannot be blank" }
-	validates :phone, :presence => { :message => "Phone cannot be blank" }
-	validates :datestamp, :presence => { :message => "Date cannot be blank" }
-	validates :color, :presence => { :message => "Color cannot be blank" }
+	validates :name, presence: true , length: { minimum: 3} 
+	validates :phone, presence: true
+	validates :datestamp, presence: true
+	validates :color, presence: true
 end
 
 class Barber < ActiveRecord::Base
@@ -40,4 +40,18 @@ post '/visit' do
 	end
 	#redirect to "/"
 
+end
+
+get '/barber/:id' do
+  
+  @b = Barber.find(params[:id])
+
+  erb :barber
+
+end
+
+get '/bookings' do
+
+	@clients = Client.all
+	erb :bookings
 end
